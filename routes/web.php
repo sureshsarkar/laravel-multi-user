@@ -5,6 +5,7 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SubAdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SubUserController;
 use App\Http\Controllers\AuthController;
 
 
@@ -57,3 +58,13 @@ Route::group(['prefix'=>'sub-admin','middleware'=>['web','isSubAdmin']],function
 Route::group(['prefix'=>'user','middleware'=>['web','isUser']],function(){
     Route::get('/dashboard',[UserController::class,'dashboard']);
 });
+
+
+// ************Sub User Routes ***********
+Route::group(['prefix'=>'sub-user','middleware'=>['web','isSubUser']],function(){
+    Route::get('/dashboard',[SubUserController::class,'dashboard']);
+});
+
+// login with google routes 
+Route::get('/login/google', 'Auth\LoginController@redirectToGoogle');
+Route::get('/login/google/callback', 'Auth\LoginController@handleGoogleCallback');

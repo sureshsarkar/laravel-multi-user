@@ -9,7 +9,7 @@
   <body class="bg-dark">
 <div class="container mt-4">
     <div class="m-auto" style="width: 400px">
-        <h1 class="text-light">Login</h1>
+        <h1 class="text-light">Register Now</h1>
         @if($errors->any())
         @foreach($errors->all() as $error)
         <p style="color:red;">{{ $error }}</p>
@@ -20,15 +20,30 @@
         <p style="color:red;">{{ Session::get('error') }}</p>
         @endif
 
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('register') }}" method="POST">
             @csrf
             <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label text-light">Email address</label>
-              <input type="email" class="form-control" name="email">
+              <label for="Name" class="form-label text-light">Name</label>
+              <input type="text" class="form-control" name="name">
             </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label text-light">Password</label>
-              <input type="password" class="form-control" name="password">
+
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-light">Email address</label>
+            <input type="email" class="form-control" name="email">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label text-light">Password</label>
+            <input type="password" class="form-control" name="password">
+          </div>
+          <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label text-light">Role</label>
+             <select name="role" class="form-control">
+              <option value="1">Super Admin</option>
+              <option value="2">Admin</option>
+              <option value="3">Sub Admin</option>
+              <option value="4">User</option>
+              <option value="5">Sub User</option>
+             </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\model\User;
+use App\models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -25,18 +25,33 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'string|required|min:2',
-            'email' => 'string|email|required|max:100|unique:users',
-            'password' =>'string|required|confirmed|min:6'
+            'email' => 'string|email|required|max:100',
+            'password' =>'string|required|min:6',
+            'role' =>'string|required'
         ]);
+     
 
         $user = new User;
         $user->name = $request->name;
+        $user->role = $request->role;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+   
         $user->save();
 
-        return back()->with('success','Your Registration has been successfull.');
+        $userCredential = $request->only('email','password');
+
+        if(Auth::attempt($userCredential)){
+
+            $route = $this->redirectDash();
+
+            return redirect($route);
+        }
+        else{
+            return redirect('/register');
+        }
     }
+
 
 
     public function loadLogin()
@@ -72,7 +87,6 @@ class AuthController extends Controller
         }
     }
 
-
     public function loadDashboard()
     {
         return view('user.dashboard');
@@ -93,6 +107,9 @@ class AuthController extends Controller
         }
         else if(Auth::user() && Auth::user()->role == 4){
             $redirect = '/user/dashboard';
+        }
+        else if(Auth::user() && Auth::user()->role == 5){
+            $redirect = '/sub-user/dashboard';
         }
         else{
             $redirect = '/dashboard';
